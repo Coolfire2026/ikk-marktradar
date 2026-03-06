@@ -1,10 +1,14 @@
 'use client'
 
+import { useState } from 'react'
+import Link from 'next/link'
 import MainLayout from '@/components/MainLayout'
-import { insuranceCompanies, activities, alerts } from '@/data/mockData'
-import { TrendingUp, AlertCircle, Zap } from 'lucide-react'
+import { insuranceCompanies, activities, alerts, marketTrends, getInnovationRanking, marketUpdate } from '@/data/mockData'
+import { TrendingUp, AlertCircle, Zap, ArrowUp, ArrowDown, Sparkles } from 'lucide-react'
 
 export default function Dashboard() {
+  const [showEmailModal, setShowEmailModal] = useState(false)
+
   // Statistiken berechnen
   const newActivitiesLast7Days = activities.filter(
     (a) => {
@@ -27,6 +31,9 @@ export default function Dashboard() {
     (a, b) => new Date(b.datum).getTime() - new Date(a.datum).getTime()
   ).slice(0, 5)
 
+  // Innovation Ranking
+  const ranking = getInnovationRanking()
+
   return (
     <MainLayout>
       <div>
@@ -36,8 +43,8 @@ export default function Dashboard() {
           <p className="text-gray-600">Übersicht der Wettbewerbsaktivitäten im Krankenkassenmarkt</p>
         </div>
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {/* KPI Cards - Main Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {/* Card 1 */}
           <div className="card">
             <div className="flex items-start justify-between">
@@ -87,6 +94,71 @@ export default function Dashboard() {
               <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
                 <AlertCircle size={24} />
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Killer Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Markttrends Card */}
+          <div className="card bg-gradient-to-br from-purple-50 to-white">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <TrendingUp size={20} className="text-purple-600" /> Markttrends
+            </h3>
+            <div className="space-y-3">
+              {marketTrends.map((trend) => (
+                <div key={trend.trend} className="flex items-center justify-between p-2 hover:bg-purple-50 rounded">
+                  <span className="text-sm text-gray-700">{trend.trend}</span>
+                  <div className="flex items-center gap-1">
+                    {trend.direction === 'up' ? (
+                      <ArrowUp size={16} className="text-green-600" />
+                    ) : (
+                      <ArrowDown size={16} className="text-red-600" />
+                    )}
+                    <span className={`text-sm font-bold ${trend.direction === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                      {trend.change}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Market Update Card */}
+          <div className="card bg-gradient-to-br from-blue-50 to-white">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Sparkles size={20} className="text-blue-600" /> {marketUpdate.title}
+            </h3>
+            <p className="text-sm text-gray-700 mb-4">{marketUpdate.summary}</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {marketUpdate.highlights.map((highlight) => (
+                <span key={highlight} className="badge badge-info text-xs">
+                  {highlight}
+                </span>
+              ))}
+            </div>
+            <Link href="/aktivitaeten" className="text-sm text-blue-600 font-medium hover:text-blue-700">
+              Details anzeigen →
+            </Link>
+          </div>
+
+          {/* Innovation Ranking Card */}
+          <div className="card bg-gradient-to-br from-green-50 to-white">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              🏆 Innovationsranking
+            </h3>
+            <div className="space-y-2">
+              {ranking.slice(0, 5).map((kk, idx) => (
+                <div key={kk.id} className="flex items-center justify-between p-2 hover:bg-green-50 rounded">
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold text-green-600 text-lg w-6">{idx + 1}</span>
+                    <span className="text-sm text-gray-700">{kk.name}</span>
+                  </div>
+                  <span className="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                    {kk.activities} Aktiv.
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

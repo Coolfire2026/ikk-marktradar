@@ -11,7 +11,7 @@ export default function KrankenkassenPage() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Beobachtete Krankenkassen</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {insuranceCompanies.map((kk) => (
             <div key={kk.id} className="card hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">

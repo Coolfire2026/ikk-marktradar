@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import MainLayout from '@/components/MainLayout'
 import { activities, kategorien, insuranceCompanies } from '@/data/mockData'
-import { Filter } from 'lucide-react'
+import { Filter, X } from 'lucide-react'
 
 export default function AktivitaetenPage() {
   const [selectedKK, setSelectedKK] = useState<string>('')
   const [selectedKategorien, setSelectedKategorien] = useState<string[]>([])
+  const [filterOpen, setFilterOpen] = useState(false)
 
   const filteredActivities = activities.filter((activity) => {
     const matchKK = !selectedKK || activity.krankenkasseId === selectedKK
@@ -27,8 +28,18 @@ export default function AktivitaetenPage() {
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Alle Aktivitäten</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Mobile Filter Button */}
+          <div className="lg:hidden mb-6">
+            <button
+              onClick={() => setFilterOpen(!filterOpen)}
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 w-full justify-center"
+            >
+              <Filter size={20} /> Filter {filterOpen ? 'ausblenden' : 'anzeigen'}
+            </button>
+          </div>
+
           {/* Sidebar Filter */}
-          <div className="lg:col-span-1">
+          <div className={`lg:col-span-1 ${filterOpen ? 'block' : 'hidden'} lg:block`}>
             <div className="card sticky top-8">
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <Filter size={20} /> Filter

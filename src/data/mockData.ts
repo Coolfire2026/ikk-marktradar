@@ -395,3 +395,29 @@ export const kategorien = [
   'Serviceverbessert',
   'Familienleistungen',
 ]
+
+// Market Trends
+export const marketTrends = [
+  { trend: 'Digital Health', change: '+45%', direction: 'up' },
+  { trend: 'Mental Health', change: '+38%', direction: 'up' },
+  { trend: 'Familienleistungen', change: '+22%', direction: 'up' },
+  { trend: 'Bonusprogramme', change: '-12%', direction: 'down' },
+]
+
+// Innovation Ranking (basierend auf Aktivitätenanzahl)
+export const getInnovationRanking = () => {
+  const ranking = insuranceCompanies.map((kk) => ({
+    id: kk.id,
+    name: kk.name,
+    activities: activities.filter((a) => a.krankenkasseId === kk.id).length,
+  }))
+  return ranking.sort((a, b) => b.activities - a.activities)
+}
+
+// Market Update
+export const marketUpdate = {
+  title: 'Markt Update der Woche',
+  summary: 'Im Krankenkassenmarkt wurden diese Woche mehrere neue Digitalangebote veröffentlicht. Besonders auffällig sind Investitionen in Fitness Apps, Mental Health Services und Präventionsprogramme.',
+  highlights: ['Fitness Apps', 'Mental Health', 'Präventionsprogramme'],
+  date: new Date().toLocaleDateString('de-DE'),
+}
