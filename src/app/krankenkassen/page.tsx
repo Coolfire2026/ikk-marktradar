@@ -4,6 +4,7 @@ import Link from 'next/link'
 import MainLayout from '@/components/MainLayout'
 import InsuranceIcon from '@/components/InsuranceIcon'
 import { insuranceCompanies } from '@/data/mockData'
+import { formatDate } from '@/utils/dateUtils'
 import { ArrowRight } from 'lucide-react'
 
 export default function KrankenkassenPage() {
@@ -30,7 +31,7 @@ export default function KrankenkassenPage() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase">Letzte Aktivität</p>
-                  <p className="text-sm text-gray-700">{kk.letzteAktivitaetDatum}</p>
+                  <p className="text-sm text-gray-700">{formatDate(kk.letzteAktivitaetDatum)}</p>
                 </div>
               </div>
 

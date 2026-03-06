@@ -34,52 +34,60 @@ export default function TimelinePage() {
         </div>
 
         {/* Timeline */}
-        <div className="relative">
-          {/* Vertical Line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-600 to-blue-200"></div>
+        <div className="space-y-12">
+          {sortedMonths.map((month) => (
+            <div key={month}>
+              {/* Month Header - Full Width */}
+              <h2 className="text-2xl font-bold text-gray-900 capitalize mb-8">{month}</h2>
 
-          {/* Timeline Items */}
-          <div className="space-y-12">
-            {sortedMonths.map((month) => (
-              <div key={month}>
-                {/* Month Header */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-9 h-9 bg-blue-600 rounded-full border-4 border-white flex items-center justify-center text-white z-10">
-                    <Calendar size={18} />
-                  </div>
-                  <div className="ml-20 md:ml-0 md:w-1/2 md:pl-8">
-                    <h2 className="text-2xl font-bold text-gray-900 capitalize">{month}</h2>
-                  </div>
-                </div>
-
-                {/* Activities */}
-                <div className="ml-20 md:w-1/2 space-y-4">
-                  {groupedActivities[month].map((activity) => (
-                    <div
-                      key={activity.id}
-                      className="card bg-gradient-to-r from-blue-50 to-white hover:shadow-lg transition-shadow"
-                    >
-                      <div className="flex items-start justify-between gap-4 mb-3">
-                        <div>
-                          <p className="text-xs font-semibold text-blue-600 uppercase">
-                            {activity.krankenkasse}
-                          </p>
-                          <h3 className="text-lg font-semibold text-gray-900 mt-1">
-                            {activity.titel}
-                          </h3>
-                        </div>
-                        <span className="text-xs text-gray-500 whitespace-nowrap">
-                          {formatDateShort(activity.datum)}
-                        </span>
+              {/* Activities - 3 Column Layout */}
+              <div className="space-y-4">
+                {groupedActivities[month].map((activity, idx) => (
+                  <div key={activity.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+                    {/* Left: Content (MD: 5 cols) */}
+                    <div className="md:col-span-5">
+                      <div className="card bg-gradient-to-r from-blue-50 to-white hover:shadow-lg transition-shadow h-full">
+                        <p className="text-xs font-semibold text-blue-600 uppercase mb-2">
+                          {activity.krankenkasse}
+                        </p>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                          {activity.titel}
+                        </h3>
+                        <span className="badge badge-info mb-3 text-xs inline-block">{activity.kategorie}</span>
+                        <p className="text-sm text-gray-700">{activity.zusammenfassung}</p>
                       </div>
-                      <span className="badge badge-info mb-3 text-xs">{activity.kategorie}</span>
-                      <p className="text-sm text-gray-700">{activity.zusammenfassung}</p>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Center: Timeline Marker (MD: 2 cols) */}
+                    <div className="md:col-span-2 flex justify-center">
+                      <div className="relative flex flex-col items-center">
+                        {/* Timeline Dot */}
+                        <div className="w-5 h-5 bg-blue-600 rounded-full border-4 border-gray-50 z-10 flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                        {/* Timeline Line - Only between items */}
+                        {idx < groupedActivities[month].length - 1 && (
+                          <div className="w-1 h-20 bg-gradient-to-b from-blue-600 to-blue-300 mt-2"></div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Right: Date (MD: 5 cols) */}
+                    <div className="md:col-span-5">
+                      <div className="flex items-center h-full justify-start md:justify-center">
+                        <div className="text-center">
+                          <p className="text-xs text-gray-500 uppercase mb-1">Datum</p>
+                          <p className="text-sm font-semibold text-gray-700">
+                            {formatDateShort(activity.datum)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </MainLayout>

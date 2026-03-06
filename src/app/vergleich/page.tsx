@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import MainLayout from '@/components/MainLayout'
 import { insuranceCompanies } from '@/data/mockData'
+import { formatDate } from '@/utils/dateUtils'
 import { X } from 'lucide-react'
 
 export default function VergleichPage() {
@@ -104,7 +105,7 @@ export default function VergleichPage() {
                     <td className="py-4 px-6 font-semibold text-gray-900">Letzte Aktivität</td>
                     {selectedCompanies.map((kk) => (
                       <td key={kk.id} className="py-4 px-6 text-gray-700">
-                        {kk.letzteAktivitaetDatum}
+                        {formatDate(kk.letzteAktivitaetDatum)}
                       </td>
                     ))}
                   </tr>
@@ -146,7 +147,7 @@ export default function VergleichPage() {
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 uppercase mb-1">Letzte Aktivität</p>
-                      <p className="text-sm text-gray-700">{kk.letzteAktivitaetDatum}</p>
+                      <p className="text-sm text-gray-700">{formatDate(kk.letzteAktivitaetDatum)}</p>
                     </div>
                   </div>
                 </div>
