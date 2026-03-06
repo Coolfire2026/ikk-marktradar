@@ -64,7 +64,7 @@ export default function SearchModal({
           id: activity.id,
           title: activity.titel,
           description: `${activity.krankenkasse} • ${activity.kategorie}`,
-          href: '/aktivitaeten',
+          href: `/aktivitaeten?highlight=${activity.id}`,
         })
       }
     })
@@ -80,7 +80,7 @@ export default function SearchModal({
           id: alert.id,
           title: alert.titel,
           description: alert.krankenkasse,
-          href: '/alerts',
+          href: `/alerts#alert-${alert.id}`,
         })
       }
     })
@@ -93,7 +93,7 @@ export default function SearchModal({
           id: kat,
           title: kat,
           description: 'Kategorie',
-          href: '/aktivitaeten',
+          href: `/aktivitaeten?category=${encodeURIComponent(kat)}`,
         })
       }
     })

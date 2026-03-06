@@ -1,15 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import MainLayout from '@/components/MainLayout'
 import { activities, kategorien, insuranceCompanies } from '@/data/mockData'
 import { formatDate } from '@/utils/dateUtils'
 import { Filter, X } from 'lucide-react'
 
 export default function AktivitaetenPage() {
+  const router = useRouter()
   const [selectedKK, setSelectedKK] = useState<string>('')
   const [selectedKategorien, setSelectedKategorien] = useState<string[]>([])
   const [filterOpen, setFilterOpen] = useState(false)
+
+  // Auto-apply category filter from URL hash
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      const category = url.searchParams.get('category')
+      if (category && !selectedKategorien.includes(category)) {
+        setSelectedKategorien([category])
+      }
+    }
+  }, [])
 
   const filteredActivities = activities.filter((activity) => {
     const matchKK = !selectedKK || activity.krankenkasseId === selectedKK
