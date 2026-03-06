@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import MainLayout from '@/components/MainLayout'
+import InsuranceIcon from '@/components/InsuranceIcon'
 import { insuranceCompanies } from '@/data/mockData'
 import { ArrowRight } from 'lucide-react'
 
@@ -19,7 +20,7 @@ export default function KrankenkassenPage() {
                   <h2 className="text-xl font-bold text-gray-900">{kk.name}</h2>
                   <p className="text-sm text-gray-600 mt-1">{kk.schwerpunkt}</p>
                 </div>
-                <div className="text-3xl">🏥</div>
+                <InsuranceIcon id={kk.id} name={kk.name} size="lg" />
               </div>
 
               <div className="space-y-3 mb-6 py-4 border-y border-gray-200">

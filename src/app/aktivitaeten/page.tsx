@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import MainLayout from '@/components/MainLayout'
 import { activities, kategorien, insuranceCompanies } from '@/data/mockData'
+import { formatDate } from '@/utils/dateUtils'
 import { Filter, X } from 'lucide-react'
 
 export default function AktivitaetenPage() {
@@ -98,7 +99,7 @@ export default function AktivitaetenPage() {
                           <span className="badge badge-info">{activity.kategorie}</span>
                         </div>
                       </div>
-                      <span className="text-xs text-gray-500 whitespace-nowrap">{activity.datum}</span>
+                      <span className="text-xs text-gray-500 whitespace-nowrap">{formatDate(activity.datum)}</span>
                     </div>
 
                     <p className="text-gray-700 mb-4">{activity.zusammenfassung}</p>

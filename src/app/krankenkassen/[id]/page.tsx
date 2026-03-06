@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import MainLayout from '@/components/MainLayout'
+import InsuranceIcon from '@/components/InsuranceIcon'
 import { insuranceCompanies, activities } from '@/data/mockData'
+import { formatDate } from '@/utils/dateUtils'
 import { ArrowLeft, Globe, Mail, Facebook } from 'lucide-react'
 
 export default async function DetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -35,7 +37,7 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
               <h1 className="text-3xl font-bold text-gray-900">{company.name}</h1>
               <p className="text-gray-600 mt-2">{company.kurzbeschreibung}</p>
             </div>
-            <div className="text-5xl">🏥</div>
+            <InsuranceIcon id={company.id} name={company.name} size="lg" />
           </div>
 
           {/* Kurzprofil */}
@@ -76,7 +78,7 @@ export default async function DetailPage({ params }: { params: Promise<{ id: str
                 <div key={activity.id} className="border-l-4 border-blue-600 pl-6 pb-6 last:pb-0">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="text-lg font-semibold text-gray-900">{activity.titel}</h3>
-                    <span className="text-xs text-gray-500">{activity.datum}</span>
+                    <span className="text-xs text-gray-500">{formatDate(activity.datum)}</span>
                   </div>
                   <span className="inline-block badge badge-info mb-3">{activity.kategorie}</span>
                   <p className="text-gray-700 mb-3">{activity.zusammenfassung}</p>

@@ -1,10 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import MainLayout from '@/components/MainLayout'
 import { alerts } from '@/data/mockData'
-import { AlertCircle, TrendingUp } from 'lucide-react'
+import { formatDate } from '@/utils/dateUtils'
+import EmailAlertModal from '@/components/EmailAlertModal'
+import { AlertCircle, TrendingUp, Mail } from 'lucide-react'
 
 export default function AlertsPage() {
+  const [emailModalOpen, setEmailModalOpen] = useState(false)
   // Sort by relevance
   const sortedAlerts = [...alerts].sort((a, b) => {
     const relevanceOrder = { 'Wichtig': 0, 'Relevant': 1, 'Information': 2 }
@@ -24,10 +28,20 @@ export default function AlertsPage() {
 
   return (
     <MainLayout>
+      <EmailAlertModal isOpen={emailModalOpen} onClose={() => setEmailModalOpen(false)} />
+      
       <div>
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Markt-Alerts</h1>
-          <p className="text-gray-600 mt-2">Wichtige Entwicklungen und Marktbewegungen im Krankenkassenmarkt</p>
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Markt-Alerts</h1>
+            <p className="text-gray-600 mt-2">Wichtige Entwicklungen und Marktbewegungen im Krankenkassenmarkt</p>
+          </div>
+          <button
+            onClick={() => setEmailModalOpen(true)}
+            className="btn btn-primary flex items-center gap-2 whitespace-nowrap"
+          >
+            <Mail size={20} /> Alert per E-Mail senden
+          </button>
         </div>
 
         {/* Statistics */}
@@ -79,7 +93,7 @@ export default function AlertsPage() {
                       <p className="text-sm text-gray-600 mt-1">{alert.krankenkasse}</p>
                     </div>
                   </div>
-                  <span className="text-xs text-gray-500 whitespace-nowrap">{alert.datum}</span>
+                  <span className="text-xs text-gray-500 whitespace-nowrap">{formatDate(alert.datum)}</span>
                 </div>
 
                 <p className="text-gray-700 mb-4">{alert.zusammenfassung}</p>

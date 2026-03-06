@@ -3,8 +3,10 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import MainLayout from '@/components/MainLayout'
-import { insuranceCompanies, activities, alerts, marketTrends, getInnovationRanking, marketUpdate } from '@/data/mockData'
-import { TrendingUp, AlertCircle, Zap, ArrowUp, ArrowDown, Sparkles } from 'lucide-react'
+import { insuranceCompanies, activities, alerts, marketTrends, getInnovationRanking, marketUpdate, getMarketIntensity } from '@/data/mockData'
+import { formatDate } from '@/utils/dateUtils'
+import { getCategoryBadgeClass } from '@/utils/categoryUtils'
+import { TrendingUp, AlertCircle, Zap, ArrowUp, ArrowDown, Sparkles, Flame } from 'lucide-react'
 
 export default function Dashboard() {
   const [showEmailModal, setShowEmailModal] = useState(false)
@@ -33,6 +35,9 @@ export default function Dashboard() {
 
   // Innovation Ranking
   const ranking = getInnovationRanking()
+
+  // Market Intensity
+  const marketIntensity = getMarketIntensity()
 
   return (
     <MainLayout>
@@ -98,10 +103,27 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Killer Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Markttrends Card */}
-          <div className="card bg-gradient-to-br from-purple-50 to-white">
+        {/* Killer Feature Cards + Market Intensity */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Market Intensity Card */}
+          <div className="card bg-gradient-to-br from-red-50 to-white">
+            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <Flame size={20} className="text-red-600" /> Marktintensität (30 Tage)
+            </h3>
+            <div className="space-y-3">
+              {marketIntensity.stats.map((stat) => (
+                <div key={stat.label} className="flex items-center justify-between p-2 hover:bg-red-50 rounded">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{stat.icon}</span>
+                    <span className="text-sm text-gray-700">{stat.label}</span>
+                  </div>
+                  <span className="text-lg font-bold text-red-600">{stat.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Markttrends Card - now 2nd */}
+          <div className="card bg-gradient-to-br from-purple-50 to-white lg:col-span-1">
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
               <TrendingUp size={20} className="text-purple-600" /> Markttrends
             </h3>
@@ -174,11 +196,13 @@ export default function Dashboard() {
                   <div key={activity.id} className="border-b border-gray-200 pb-4 last:border-0">
                     <div className="flex justify-between items-start gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <span className="text-xs font-semibold text-blue-600 uppercase">
                             {activity.krankenkasse}
                           </span>
-                          <span className="badge badge-info">{activity.kategorie}</span>
+                          <span className={`badge badge-category ${getCategoryBadgeClass(activity.kategorie)}`}>
+                            {activity.kategorie}
+                          </span>
                         </div>
                         <h3 className="font-semibold text-gray-900 mb-1">{activity.titel}</h3>
                         <p className="text-sm text-gray-600 mb-2">{activity.zusammenfassung}</p>
@@ -186,7 +210,7 @@ export default function Dashboard() {
                           Quelle: {activity.quelle}
                         </a>
                       </div>
-                      <div className="text-xs text-gray-500 whitespace-nowrap">{activity.datum}</div>
+                      <div className="text-xs text-gray-500 whitespace-nowrap">{formatDate(activity.datum)}</div>
                     </div>
                   </div>
                 ))}

@@ -4,11 +4,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { BarChart3, Building2, Activity, TrendingUp, AlertCircle, Home, Menu, X } from 'lucide-react'
+import SearchModal from './SearchModal'
 
 export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [searchModalOpen, setSearchModalOpen] = useState(false)
 
   const navItems = [
     { href: '/', label: 'Dashboard', icon: Home },
@@ -19,14 +21,31 @@ export default function Sidebar() {
     { href: '/timeline', label: 'Timeline', icon: BarChart3 },
   ]
 
-  // Dispatch search event
+  // Handle search
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value)
-    window.dispatchEvent(new CustomEvent('search', { detail: e.target.value }))
+    const term = e.target.value
+    setSearchTerm(term)
+    if (term.trim()) {
+      setSearchModalOpen(true)
+    }
+  }
+
+  const handleSearchChange = (term: string) => {
+    setSearchTerm(term)
   }
 
   return (
     <>
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => {
+          setSearchModalOpen(false)
+          setSearchTerm('')
+        }}
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+      />
+
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 p-4 z-50 flex items-center justify-between">
         <button

@@ -421,3 +421,35 @@ export const marketUpdate = {
   highlights: ['Fitness Apps', 'Mental Health', 'Präventionsprogramme'],
   date: new Date().toLocaleDateString('de-DE'),
 }
+
+// Market Intensity (30 days)
+export const getMarketIntensity = () => {
+  const last30Days = new Date()
+  last30Days.setDate(last30Days.getDate() - 30)
+
+  const serviceCount = activities.filter(
+    (a) => new Date(a.datum) >= last30Days && (a.kategorie === 'Serviceverbessert' || a.kategorie === 'App & Digital')
+  ).length
+
+  const appCount = activities.filter(
+    (a) => new Date(a.datum) >= last30Days && a.kategorie === 'App & Digital'
+  ).length
+
+  const preventionCount = activities.filter(
+    (a) => new Date(a.datum) >= last30Days && a.kategorie === 'Prävention'
+  ).length
+
+  const bonusCount = activities.filter(
+    (a) => new Date(a.datum) >= last30Days && a.kategorie === 'Bonusprogramme'
+  ).length
+
+  return {
+    title: 'Marktintensität (30 Tage)',
+    stats: [
+      { label: 'Neue Leistungen', value: serviceCount, icon: '✨' },
+      { label: 'Neue Apps', value: appCount, icon: '📱' },
+      { label: 'Neue Präventionsprogramme', value: preventionCount, icon: '🏃' },
+      { label: 'Neue Bonusprogramme', value: bonusCount, icon: '🎁' },
+    ],
+  }
+}

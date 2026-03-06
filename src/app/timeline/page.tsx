@@ -2,6 +2,7 @@
 
 import MainLayout from '@/components/MainLayout'
 import { activities } from '@/data/mockData'
+import { formatDateShort } from '@/utils/dateUtils'
 import { Calendar } from 'lucide-react'
 
 export default function TimelinePage() {
@@ -68,10 +69,7 @@ export default function TimelinePage() {
                           </h3>
                         </div>
                         <span className="text-xs text-gray-500 whitespace-nowrap">
-                          {new Date(activity.datum).toLocaleDateString('de-DE', {
-                            day: '2-digit',
-                            month: '2-digit',
-                          })}
+                          {formatDateShort(activity.datum)}
                         </span>
                       </div>
                       <span className="badge badge-info mb-3 text-xs">{activity.kategorie}</span>
